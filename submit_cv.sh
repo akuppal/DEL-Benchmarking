@@ -22,8 +22,11 @@ MODEL=${MODELS[$SLURM_ARRAY_TASK_ID]}
 SPLIT=${1:-Random}
 
 cd "$SLURM_SUBMIT_DIR"
-# Activate your environment here, e.g.:
-# source ~/miniconda3/etc/profile.d/conda.sh && conda activate del
+# conda's activate scripts read PS1, which is unset in a batch shell and so trips `set -u`
+PS1=${PS1:-}
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate del
+echo "python: $(command -v python)"
 
 echo "Job $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID): $MODEL on $SPLIT, host $(hostname)"
 start=$(date +%s)

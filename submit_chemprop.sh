@@ -26,8 +26,11 @@ set -euo pipefail
 SPLIT=${1:-Random}
 
 cd "$SLURM_SUBMIT_DIR"
-# Activate your environment here, e.g.:
-# source ~/miniconda3/etc/profile.d/conda.sh && conda activate del
+# conda's activate scripts read PS1, which is unset in a batch shell and so trips `set -u`
+PS1=${PS1:-}
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate del
+echo "python: $(command -v python)"
 
 echo "Job $SLURM_JOB_ID: chemprop on $SPLIT, host $(hostname)"
 nvidia-smi --query-gpu=name,memory.total --format=csv || true
