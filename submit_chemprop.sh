@@ -8,8 +8,12 @@
 #
 # Finished folds are skipped on rerun, so if the job times out, resubmit the same command.
 #SBATCH --job-name=del-chemprop
+# The condo partition only accepts QOS condo or unlim (condo-gpu belongs to a
+# different partition). If this pends with a gres/resource reason, condo has no
+# GPU nodes -- move both lines to the GPU partition shown by:
+#   sacctmgr show assoc user=$USER format=partition%20,qos%30
 #SBATCH --partition=condo
-#SBATCH --qos=condo-gpu
+#SBATCH --qos=condo
 #SBATCH --account=csd792
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
